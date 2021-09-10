@@ -19,7 +19,17 @@
   </body>
   <script type="text/javascript">
 
-
+    var Player = {
+      Generate: function(){
+        var r = Math.random();
+        var x = Math.floor( r * 64 + 1 )
+        var y = Math.floor( r * 64 + 1 )
+        if(Dungeon.map[x][y] != 1) Player.Generate();
+        else{
+          Dungeon.map[x][y] = 3;
+        }
+      }
+    };
 
     var Dungeon = {
         map: null,
@@ -174,11 +184,13 @@
             for (var y = 0; y < Dungeon.map_size; y++) {
                 for (var x = 0; x < Dungeon.map_size; x++) {
                     var tile = Dungeon.map[x][y];
-                    if (tile == 0) this.ctx.fillStyle = '#351330'; //외부 공간
+                    if (tile == 0) this.ctx.fillStyle = '#aa4b6b'; //외부 공간
                     else if (tile == 1){
-                      this.ctx.fillStyle = '#64908A'; // 내부 공간
+                      this.ctx.fillStyle = '#6b6b83'; // 내부 공간
+                    }else if(tile ==3){
+                      this.ctx.fillStyle = '#FFFFFF';
                     }
-                    else this.ctx.fillStyle = '#424254'; // 벽
+                    else this.ctx.fillStyle = '#3b8d99'; // 벽
                     this.ctx.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
                 }
             }
@@ -191,8 +203,8 @@
             return~~ (Math.random() * (high - low)) + low;
         }
     };
-
     Dungeon.Generate();
+    Player.Generate();
     Renderer.Initialize();
     Renderer.Update(Dungeon.map);
 
