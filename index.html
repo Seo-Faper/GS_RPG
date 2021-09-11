@@ -20,14 +20,31 @@
   <script type="text/javascript">
 
     var Player = {
+    positionX: 0,
+    positionY: 0,
       Generate: function(){
-        var r = Math.random();
-        var x = Math.floor( r * 64 + 1 )
-        var y = Math.floor( r * 64 + 1 )
+        var r1 = Math.random();
+        var r2 = Math.random();
+        var x = Math.floor( r1 * 64 + 1 )
+        var y = Math.floor( r2 * 64 + 1 )
         if(Dungeon.map[x][y] != 1) Player.Generate();
         else{
-          Dungeon.map[x][y] = 3;
+            Player.positionX = x
+            Player.positionY = y
+          Dungeon.map[Player.positionX][Player.positionY] = 3;
         }
+      },
+      keyPush: function(evt){
+          x = positionX
+          y = positionY
+        console.log(evt.keyCode);
+        switch(evt.keyCode) {
+            case 37:
+                console.log("왼쪽");
+
+        }
+        
+
       }
     };
 
@@ -171,12 +188,12 @@
     var Renderer = {
         canvas: null,
         ctx: null,
-        size: 512,
+        size: 1024,
         scale: 0,
         Initialize: function () {
             this.canvas = document.getElementById('canvas');
             this.canvas.width = this.size;
-            this.canvas.height = this.size;
+            this.canvas.height = this.size-200;
             this.ctx = canvas.getContext('2d');
             this.scale = this.canvas.width / Dungeon.map_size;
         },
@@ -207,6 +224,12 @@
     Player.Generate();
     Renderer.Initialize();
     Renderer.Update(Dungeon.map);
+
+    window.onload = () => {
+            document.addEventListener("keydown", Player.keyPush)
+
+        }
+
 
   </script>
 </html>
