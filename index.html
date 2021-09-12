@@ -9,14 +9,14 @@
     }
     canvas{
       border: 5px solid #424254;
-
     }
     </style>
     <title>GS</title>
   </head>
   <body>
     <canvas id="canvas"></canvas>
-  </body>
+    
+</body>
   <script type="text/javascript">
 
     var Player = {
@@ -35,16 +35,58 @@
         }
       },
       keyPush: function(evt){
-          x = positionX
-          y = positionY
-        console.log(evt.keyCode);
+          var x = Player.positionX;
+          var y = Player.positionY;
         switch(evt.keyCode) {
             case 37:
-                console.log("왼쪽");
+                x += -1
+                y += 0
 
+                if(Dungeon.map[x][y]==1){
+                Player.positionX = x
+                Player.positionY = y;
+                Dungeon.map[Player.positionX][Player.positionY] = 3;
+                Dungeon.map[Player.positionX+1][Player.positionY] = 1;
+                }
+
+                break;
+            case 38:
+                x += 0
+                y += -1
+                if(Dungeon.map[x][y]==1){
+                Player.positionX = x
+                Player.positionY = y;
+                Dungeon.map[Player.positionX][Player.positionY] = 3;
+                Dungeon.map[Player.positionX][Player.positionY+1] = 1;
+                }
+
+                break;
+            case 39:
+                x += 1
+                y += 0
+                if(Dungeon.map[x][y]==1){
+                Player.positionX = x
+                Player.positionY = y;
+                Dungeon.map[Player.positionX][Player.positionY] = 3;
+                Dungeon.map[Player.positionX-1][Player.positionY] = 1;
+                }
+
+                break;
+            case 40:
+                x += 0
+                y += 1
+                if(Dungeon.map[x][y]==1){
+                Player.positionX = x
+                Player.positionY = y;
+                Dungeon.map[Player.positionX][Player.positionY] = 3;
+                Dungeon.map[Player.positionX][Player.positionY-1] = 1;
+                }
+
+                break;
+            
         }
-        
 
+        Renderer.Update(Dungeon.map);
       }
     };
 
@@ -183,6 +225,18 @@
             }
 
             return false;
+        },
+        GenerateObject: function(type){
+            var r1 = Math.random();
+            var r2 = Math.random();
+            var x = Math.floor( r1 * 64 + 1 )
+            var y = Math.floor( r2 * 64 + 1 )
+            if(Dungeon.map[x][y] != 1) Dungeon.GenerateObject();
+                else{
+             Dungeon.map[Player.positionX][Player.positionY] = type;
+            }
+
+            
         }
     }
     var Renderer = {
@@ -201,13 +255,13 @@
             for (var y = 0; y < Dungeon.map_size; y++) {
                 for (var x = 0; x < Dungeon.map_size; x++) {
                     var tile = Dungeon.map[x][y];
-                    if (tile == 0) this.ctx.fillStyle = '#aa4b6b'; //외부 공간
+                    if (tile == 0) this.ctx.fillStyle = '#f7797d'; //0 : 외부 공간
                     else if (tile == 1){
-                      this.ctx.fillStyle = '#6b6b83'; // 내부 공간
+                      this.ctx.fillStyle = '#C6FFDD'; // 1: 내부 공간
                     }else if(tile ==3){
-                      this.ctx.fillStyle = '#FFFFFF';
+                      this.ctx.fillStyle = '#1565C0';   //3: 사람
                     }
-                    else this.ctx.fillStyle = '#3b8d99'; // 벽
+                    else this.ctx.fillStyle = '#FBD786'; //2 :  벽
                     this.ctx.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
                 }
             }
@@ -227,7 +281,6 @@
 
     window.onload = () => {
             document.addEventListener("keydown", Player.keyPush)
-
         }
 
 
