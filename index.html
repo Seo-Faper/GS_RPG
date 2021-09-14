@@ -255,13 +255,17 @@
             for (var y = 0; y < Dungeon.map_size; y++) {
                 for (var x = 0; x < Dungeon.map_size; x++) {
                     var tile = Dungeon.map[x][y];
-                    if (tile == 0) this.ctx.fillStyle = '#f7797d'; //0 : 외부 공간
+                     if (tile == 0) this.ctx.fillStyle = '#0F2027'; //0 : 외부 공간
                     else if (tile == 1){
                       this.ctx.fillStyle = '#C6FFDD'; // 1: 내부 공간
                     }else if(tile ==3){
-                      this.ctx.fillStyle = '#1565C0';   //3: 사람
+                      this.ctx.fillStyle = '#f4791f';   //3: 사람
                     }
-                    else this.ctx.fillStyle = '#FBD786'; //2 :  벽
+                    else if(tile ==2){
+                        this.ctx.fillStyle = '#2C5364'; //2 :  벽
+                    }else if(tile == 4){
+                        this.ctx.fillStyle = '#000000'; // 4: 계단
+                    }
                     this.ctx.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
                 }
             }
